@@ -10,17 +10,24 @@
   <body>
     <div class="wrapper">
       <div class="filters">
-        <label for="search">Last name:</label>
+        <div class="filters-box">
+          <label for="search-type">Filter by:</label>
+          <select name="search-type" id="search-type">
+            <option value="firstName">First name</option>
+            <option value="lastName">Last name</option>
+            <option value="grade">Grade</option>
+          </select>
+        </div>
         <input type="text" id="search" />
       </div>
 
       <table id="studentsTable">
         <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Grade</th>
+          <tr id="header-row-table">
+            <th data-sort-type="id">ID</th>
+            <th data-sort-type="firstName">First Name</th>
+            <th data-sort-type="lastName" id="lastNameHeader">Last Name</th>
+            <th data-sort-type="grade">Grade</th>
           </tr>
         </thead>
         <tbody></tbody>

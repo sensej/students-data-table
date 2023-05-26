@@ -1,8 +1,21 @@
 import createTable from './js/createTable.js';
 import filterTable from './js/filterTable.js';
 
-async function fetchStudents() {
-  const response = await fetch('./data/studentsData.json');
+async function fetchStudents(group = 1) {
+  let response;
+
+  switch (group) {
+    case 1:
+      response = await fetch('./data/studentsData.json');
+      break;
+    case 2:
+      response = await fetch('./data/studentsGroupB.json');
+      break;
+    default:
+      console.error('Invalid group number provided');
+      return;
+  }
+
   const students = await response.json();
 
   return students;
@@ -10,7 +23,7 @@ async function fetchStudents() {
 
 async function init() {
   const tableBody = document.querySelector('tbody[data-tbody-id="students"]');
-  let studentsData = await fetchStudents();
+  let studentsData = await fetchStudents(2);
 
   createTable(tableBody, studentsData);
 

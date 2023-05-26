@@ -9,78 +9,56 @@ async function fetchStudents() {
 }
 
 async function init() {
-  const tableBody = document.querySelector('#studentsTable tbody');
+  const tableBody = document.querySelector('tbody[data-tbody-id="students"]');
   let studentsData = await fetchStudents();
 
   createTable(tableBody, studentsData);
 
-  const searchInput = document.querySelector('#search');
-  // const lastNameHeader = document.querySelector('#lastNameHeader');
+  const searchInputs = document.querySelectorAll('.search-input');
+  const tableHeaders = document.querySelectorAll('.sortable');
 
-  const headerRowTable = document.querySelector('#header-row-table');
+  const sortData = {
+    id: true,
+    firstName: true,
+    lastName: true,
+    grade: true,
+  };
 
-  let isSorted = true;
+  tableHeaders.forEach((tableHeader) => {
+    tableHeader.addEventListener('click', (e) => {
+      const column = tableHeader.getAttribute('data-column');
 
-  headerRowTable.addEventListener('click', (e) => {
-    const target = e.target;
-
-    if (target.hasAttribute('data-sort-type')) {
       studentsData = studentsData.sort((a, b) => {
-        const compareElementA =
-          typeof a[target.dataset.sortType] === 'string'
-            ? a[target.dataset.sortType].toLowerCase()
-            : a[target.dataset.sortType];
-        const compareElementB =
-          typeof b[target.dataset.sortType] === 'string'
-            ? b[target.dataset.sortType].toLowerCase()
-            : b[target.dataset.sortType];
+        const compareElementA = a[column].toString().toLowerCase();
+        const compareElementB = b[column].toString().toLowerCase();
 
-        if (isSorted) {
-          if (typeof compareElementA === 'number') {
-            return compareElementA - compareElementB;
-          }
-
+        if (sortData[column]) {
           return compareElementA.localeCompare(compareElementB);
         } else {
-          if (typeof compareElementB === 'number') {
-            return compareElementB - compareElementA;
-          }
-
           return compareElementB.localeCompare(compareElementA);
         }
       });
 
-      isSorted = !isSorted;
+      sortData[column] = !sortData[column];
+
       tableBody.innerHTML = '';
       createTable(tableBody, studentsData);
-    }
+    });
   });
 
-  // lastNameHeader.addEventListener('click', (e) => {
-  //   studentsData = studentsData.sort((a, b) => {
-  //     const lastNameA = a.lastName.toLowerCase();
-  //     const lastNameB = b.lastName.toLowerCase();
+  searchInputs.forEach((searchInput) => {
+    searchInput.addEventListener('input', (event) => {
+      const searchValues = {};
 
-  //     if (isSorted) {
-  //       return lastNameA.localeCompare(lastNameB);
-  //     } else {
-  //       return lastNameB.localeCompare(lastNameA);
-  //     }
-  //   });
+      searchInputs.forEach((input) => {
+        searchValues[input.getAttribute('data-column')] = input.value;
+      });
 
-  //   isSorted = !isSorted;
-  //   tableBody.innerHTML = '';
-  //   createTable(tableBody, studentsData);
-  // });
+      const filteredStudents = filterTable(studentsData, searchValues);
 
-  searchInput.addEventListener('input', (event) => {
-    const searchValue = event.target.value;
-    const searchType = document.querySelector('#search-type').value;
-
-    const filteredStudents = filterTable(studentsData, searchValue, searchType);
-
-    tableBody.innerHTML = '';
-    createTable(tableBody, filteredStudents);
+      tableBody.innerHTML = '';
+      createTable(tableBody, filteredStudents);
+    });
   });
 }
 

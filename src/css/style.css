@@ -8,24 +8,27 @@
 
 body {
   font-family: Helvetica, serif;
+  font-size: 1rem;
 }
 
 .wrapper {
-  width: 100%;
-  max-width: 980px;
-  margin: 50px auto;
-}
-
-.filters {
-  width: 100%;
-  max-width: 200px;
   display: flex;
   flex-direction: column;
-  margin: 20px 0;
-  gap: 10px;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
 }
 
-select {
+.filters,
+.table-container {
+  width: 100%;
+}
+
+.filters-item {
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 table {
@@ -43,4 +46,33 @@ td {
   border: 1px solid #000;
   padding: 8px;
   text-align: left;
+}
+
+label,
+input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+input {
+  border: 1px solid #959595;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    margin: 20px auto;
+    flex-direction: row;
+  }
+
+  .filters {
+    width: 30%;
+  }
+
+  .table-container {
+    width: 70%;
+  }
 }

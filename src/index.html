@@ -10,28 +10,66 @@
   <body>
     <div class="wrapper">
       <div class="filters">
-        <div class="filters-box">
-          <label for="search-type">Filter by:</label>
-          <select name="search-type" id="search-type">
-            <option value="firstName">First name</option>
-            <option value="lastName">Last name</option>
-            <option value="grade">Grade</option>
-          </select>
+        <h2>Filters</h2>
+
+        <div class="filters-item filter-id">
+          <label for="search-id">ID:</label>
+          <input
+            type="text"
+            id="search-id"
+            class="search-input"
+            data-column="id"
+          />
         </div>
-        <input type="text" id="search" />
+
+        <div class="filters-item filter-first-name">
+          <label for="search-name">Last name:</label>
+          <input
+            type="text"
+            id="search-first-name"
+            class="search-input"
+            data-column="firstName"
+          />
+        </div>
+
+        <div class="filters-item filter-last-name">
+          <label for="search-last-name">Last name:</label>
+          <input
+            type="text"
+            id="search-last-name"
+            class="search-input"
+            data-column="lastName"
+          />
+        </div>
+
+        <div class="filters-item filter-grade">
+          <label for="search-grade">Last name:</label>
+          <input
+            type="text"
+            id="search-grade"
+            class="search-input"
+            data-column="grade"
+          />
+        </div>
       </div>
 
-      <table id="studentsTable">
-        <thead>
-          <tr id="header-row-table">
-            <th data-sort-type="id">ID</th>
-            <th data-sort-type="firstName">First Name</th>
-            <th data-sort-type="lastName" id="lastNameHeader">Last Name</th>
-            <th data-sort-type="grade">Grade</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-container">
+        <h2>Data</h2>
+
+        <table id="studentsTable">
+          <thead>
+            <tr id="header-row-table">
+              <th class="sortable" data-column="id">ID</th>
+              <th class="sortable" data-column="firstName">First Name</th>
+              <th class="sortable" data-column="lastName" id="lastNameHeader">
+                Last Name
+              </th>
+              <th class="sortable" data-column="grade">Grade</th>
+            </tr>
+          </thead>
+          <tbody data-tbody-id="students"></tbody>
+        </table>
+      </div>
     </div>
     <script src="index.js" type="module"></script>
   </body>

@@ -1,9 +1,11 @@
-export default function filterTable(students, searchValue, searchType) {
+export default function filterTable(students, searchValues) {
   const filteredData = students.filter((student) => {
-    return student[searchType]
-      .toString()
-      .toLowerCase()
-      .includes(searchValue.toLowerCase());
+    return Object.keys(searchValues).every((key) => {
+      return student[key]
+        .toString()
+        .toLowerCase()
+        .includes(searchValues[key].toLowerCase());
+    });
   });
 
   return filteredData;

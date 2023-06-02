@@ -1,29 +1,17 @@
 import createTable from './js/createTable.js';
 import filterTable from './js/filterTable.js';
-
-async function fetchStudents(group = 1) {
-  let response;
-
-  switch (group) {
-    case 1:
-      response = await fetch('./data/studentsData.json');
-      break;
-    case 2:
-      response = await fetch('./data/studentsGroupB.json');
-      break;
-    default:
-      console.error('Invalid group number provided');
-      return;
-  }
-
-  const students = await response.json();
-
-  return students;
-}
+import fetchStudents from "./js/fetchStudents.js";
 
 async function init() {
   const tableBody = document.querySelector('tbody[data-tbody-id="students"]');
-  let studentsData = await fetchStudents(2);
+
+  function updateTable(studentsData) {
+    tableBody.innerHTML = '';
+    createTable(tableBody, studentsData);
+  }
+
+  let studentsData = await fetchStudents(1);
+  let filteredStudents = [...studentsData];
 
   createTable(tableBody, studentsData);
 
@@ -38,39 +26,38 @@ async function init() {
   };
 
   tableHeaders.forEach((tableHeader) => {
-    tableHeader.addEventListener('click', (e) => {
+    tableHeader.addEventListener('click', () => {
       const column = tableHeader.getAttribute('data-column');
 
-      studentsData = studentsData.sort((a, b) => {
-        const compareElementA = a[column].toString().toLowerCase();
-        const compareElementB = b[column].toString().toLowerCase();
+      filteredStudents = filteredStudents.sort((a, b) => {
+        const compareElementA = a[column];
+        const compareElementB = b[column];
 
-        if (sortData[column]) {
-          return compareElementA.localeCompare(compareElementB);
+        if (!isNaN(compareElementA) && !isNaN(compareElementB)) {
+          return sortData[column] ? compareElementB - compareElementA : compareElementA - compareElementB ;
         } else {
-          return compareElementB.localeCompare(compareElementA);
+          const stringCompareElementA = a[column].toString().toLowerCase();
+          const stringCompareElementB = b[column].toString().toLowerCase();
+
+          return sortData[column] ? stringCompareElementA.localeCompare(stringCompareElementB) : stringCompareElementB.localeCompare(stringCompareElementA);
         }
       });
 
       sortData[column] = !sortData[column];
 
-      tableBody.innerHTML = '';
-      createTable(tableBody, studentsData);
+      updateTable(filteredStudents)
     });
   });
 
   searchInputs.forEach((searchInput) => {
-    searchInput.addEventListener('input', (event) => {
+    searchInput.addEventListener('input', () => {
       const searchValues = {};
 
-      searchInputs.forEach((input) => {
-        searchValues[input.getAttribute('data-column')] = input.value;
-      });
+      searchValues[searchInput.getAttribute('data-column')] = searchInput.value;
 
-      const filteredStudents = filterTable(studentsData, searchValues);
+      filteredStudents = filterTable(studentsData, searchValues);
 
-      tableBody.innerHTML = '';
-      createTable(tableBody, filteredStudents);
+      updateTable(filteredStudents);
     });
   });
 }

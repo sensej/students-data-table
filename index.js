@@ -1,19 +1,19 @@
 import createTable from './js/createTable.js';
 import filterTable from './js/filterTable.js';
-import fetchStudents from "./js/fetchStudents.js";
+import fetchData from './js/fetchData.js';
 
-async function init() {
-  const tableBody = document.querySelector('tbody[data-tbody-id="students"]');
+async function init(url) {
+  const tableBody = document.querySelector('tbody[data-tbody-id="data"]');
 
-  function updateTable(studentsData) {
+  function updateTable(data) {
     tableBody.innerHTML = '';
-    createTable(tableBody, studentsData);
+    createTable(tableBody, data);
   }
 
-  let studentsData = await fetchStudents(1);
-  let filteredStudents = [...studentsData];
+  let data = await fetchData(url);
+  let filteredData = [...data];
 
-  createTable(tableBody, studentsData);
+  createTable(tableBody, data);
 
   const searchInputs = document.querySelectorAll('.search-input');
   const tableHeaders = document.querySelectorAll('.sortable');
@@ -29,23 +29,27 @@ async function init() {
     tableHeader.addEventListener('click', () => {
       const column = tableHeader.getAttribute('data-column');
 
-      filteredStudents = filteredStudents.sort((a, b) => {
+      filteredData = filteredData.sort((a, b) => {
         const compareElementA = a[column];
         const compareElementB = b[column];
 
         if (!isNaN(compareElementA) && !isNaN(compareElementB)) {
-          return sortData[column] ? compareElementB - compareElementA : compareElementA - compareElementB ;
+          return sortData[column]
+            ? compareElementB - compareElementA
+            : compareElementA - compareElementB;
         } else {
           const stringCompareElementA = a[column].toString().toLowerCase();
           const stringCompareElementB = b[column].toString().toLowerCase();
 
-          return sortData[column] ? stringCompareElementA.localeCompare(stringCompareElementB) : stringCompareElementB.localeCompare(stringCompareElementA);
+          return sortData[column]
+            ? stringCompareElementA.localeCompare(stringCompareElementB)
+            : stringCompareElementB.localeCompare(stringCompareElementA);
         }
       });
 
       sortData[column] = !sortData[column];
 
-      updateTable(filteredStudents)
+      updateTable(filteredData);
     });
   });
 
@@ -55,11 +59,11 @@ async function init() {
 
       searchValues[searchInput.getAttribute('data-column')] = searchInput.value;
 
-      filteredStudents = filterTable(studentsData, searchValues);
+      filteredData = filterTable(data, searchValues);
 
-      updateTable(filteredStudents);
+      updateTable(filteredData);
     });
   });
 }
 
-init();
+init('./data/studentsData.json');

@@ -5,28 +5,25 @@ import createFiltersAndHeaders from './js/createFiltersAndHeaders.js';
 
 async function init(url) {
   const tableBody = document.querySelector('tbody[data-tbody-id="data"]');
+  let data = await fetchData(url);
+
+  createFiltersAndHeaders(data);
+  createTable(tableBody, data);
+
+  const sortData = {};
+  Object.keys(data[0]).forEach((key) => {
+    sortData[key] = true;
+  });
+
+  const searchInputs = document.querySelectorAll('.search-input');
+  const tableHeaders = document.querySelectorAll('.sortable');
+
+  let filteredData = [...data];
 
   function updateTable(data) {
     tableBody.innerHTML = '';
     createTable(tableBody, data);
   }
-
-  let data = await fetchData(url);
-  let filteredData = [...data];
-
-  createFiltersAndHeaders(data);
-
-  createTable(tableBody, data);
-
-  const searchInputs = document.querySelectorAll('.search-input');
-  const tableHeaders = document.querySelectorAll('.sortable');
-
-  const sortData = {
-    id: true,
-    firstName: true,
-    lastName: true,
-    grade: true,
-  };
 
   tableHeaders.forEach((tableHeader) => {
     tableHeader.addEventListener('click', () => {

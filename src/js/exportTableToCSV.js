@@ -13,8 +13,6 @@ export default function exportTableToCSV(filename) {
     csv.push(row.join(','));
   }
 
-  console.log(csv.join('\n'));
-
   downloadCSV(csv.join('\n'), filename);
 }
 

@@ -1,7 +1,7 @@
-export default function filterTable(students, searchValues) {
-  const filteredData = students.filter((student) => {
+export default function filterTable(data, searchValues) {
+  const filteredData = data.filter((item) => {
     return Object.keys(searchValues).every((key) => {
-      return student[key]
+      return item[key]
         .toString()
         .toLowerCase()
         .includes(searchValues[key].toLowerCase());

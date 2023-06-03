@@ -1,6 +1,7 @@
 import createTable from './js/createTable.js';
 import filterTable from './js/filterTable.js';
 import fetchData from './js/fetchData.js';
+import createFiltersAndHeaders from './js/createFiltersAndHeaders.js';
 
 async function init(url) {
   const tableBody = document.querySelector('tbody[data-tbody-id="data"]');
@@ -12,6 +13,8 @@ async function init(url) {
 
   let data = await fetchData(url);
   let filteredData = [...data];
+
+  createFiltersAndHeaders(data);
 
   createTable(tableBody, data);
 
@@ -66,4 +69,4 @@ async function init(url) {
   });
 }
 
-init('./data/studentsData.json');
+init('https://jsonplaceholder.typicode.com/users');

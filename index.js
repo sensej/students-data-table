@@ -2,6 +2,7 @@ import createTable from './js/createTable.js';
 import filterTable from './js/filterTable.js';
 import fetchData from './js/fetchData.js';
 import createFiltersAndHeaders from './js/createFiltersAndHeaders.js';
+import exportTableToCSV from './js/exportTableToCSV.js';
 
 async function init(url) {
   const tableBody = document.querySelector('tbody[data-tbody-id="data"]');
@@ -65,5 +66,14 @@ async function init(url) {
     });
   });
 }
+
+const saveBtn = document.querySelector('#save-table');
+saveBtn.addEventListener('click', () => {
+  let filename = prompt('Save as: ', '');
+
+  if (filename) {
+    exportTableToCSV(`${filename}.csv`);
+  }
+});
 
 init('https://jsonplaceholder.typicode.com/users');

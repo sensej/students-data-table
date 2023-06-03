@@ -25,6 +25,15 @@ body {
   width: 100%;
 }
 
+.control {
+  margin: 20px 0;
+  text-align: right;
+}
+
+.control button {
+  padding: 7px 10px;
+}
+
 .filters-item {
   border: 1px solid #eee;
   padding: 10px;

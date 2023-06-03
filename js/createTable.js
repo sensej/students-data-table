@@ -1,11 +1,14 @@
-export default function createTable(tableBody, items) {
-  items.forEach((item) => {
+export default function createTable(tableBody, data) {
+  data.forEach((item) => {
     const tableRow = document.createElement('tr');
-    const itemsKeys = Object.keys(item);
 
-    itemsKeys.forEach((value) => {
+    Object.values(item).forEach((value) => {
+      if (typeof value === 'object') {
+        return;
+      }
+
       const cell = document.createElement('td');
-      cell.textContent = item[value];
+      cell.textContent = value;
       tableRow.appendChild(cell);
     });
 
